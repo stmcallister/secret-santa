@@ -34,16 +34,15 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        Secret Santa App!
-        <ul>
+        <h1>Secret Santa App!</h1>
+        <p style={{fontStyle: "italic"}}>Click on your name to see who you are serving this week!</p>
           {
             matchesAry.map(match => {
               return <div style={{margin:15}} onClick={() => alert(`Hello, ${match[0]}!  Your secret sibling to serve this week is...${match[1]}!`)}>{match[0]}</div>
             })
           }
-        </ul>
+        <div><button onClick={() => sessionStorage.removeItem(santaStorageKey) }>Get New Matches!</button></div>
       </header>
-      <div><a onClick={() => sessionStorage.removeItem(santaStorageKey) }>Get New Matches!</a></div>
     </div>
   );
 }
