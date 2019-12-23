@@ -1,10 +1,9 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 function App() {
-  let people = ["Scott","Amber","Ashley","Andrew","Katie","Emily","Jen"];
-  let receivers = ["Amber","Ashley","Andrew","Katie","Scott","Emily","Jen"];
+  let givers = ["Scott","Amber","Ashley","Andrew","Katie","Emily","Jen"];
+  let receivers = ["Scott","Amber","Ashley","Andrew","Katie","Emily","Jen"];
   let matches = {};
   const prevMatches = {
     "Amber": "Emily",
@@ -14,12 +13,22 @@ function App() {
     "Katie": "",
     "Emily": ""
   };
+  const santaStorageKey = 'secret-santa-matches';
 
-  people.map(person => {
-      let pool = receivers.filter(name => name != person);
-      matches[person] = pool[Math.floor(Math.random() * pool.length)];
-      receivers = receivers.filter(n => n != matches[person]);
-  });
+  if (!sessionStorage.getItem(santaStorageKey)) {
+    givers.map(person => {
+      let pool = receivers.filter(name => name !== person);
+      let randIndex = Math.floor(Math.random() * pool.length);
+      while(pool[randIndex] === prevMatches[person]) {
+        randIndex = Math.floor(Math.random() * pool.length);
+      }
+      matches[person] = pool[randIndex];
+      receivers = receivers.filter(n => n !== matches[person]);
+    });
+    sessionStorage.setItem(santaStorageKey, JSON.stringify(matches));
+  } else {
+    matches = JSON.parse(sessionStorage.getItem(santaStorageKey));
+  }
   let matchesAry = Object.entries(matches);
 
   return (
@@ -34,6 +43,7 @@ function App() {
           }
         </ul>
       </header>
+      <div><a onClick={() => sessionStorage.removeItem(santaStorageKey) }>Get New Matches!</a></div>
     </div>
   );
 }
