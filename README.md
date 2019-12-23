@@ -1,3 +1,8 @@
+# Secret Santa
+This project helps match up people in a list for gift giving as "Secret Santas".
+
+---
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
