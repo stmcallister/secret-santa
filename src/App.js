@@ -9,28 +9,39 @@ function App() {
     "Amber": "Emily",
     "Scott": "Amber",
     "Ashley": "Scott",
-    "Andrew": "",
-    "Katie": "",
-    "Emily": ""
+    "Andrew": "Ashley",
+    "Katie": "Andrew",
+    "Emily": "Katie"
   };
   const santaStorageKey = 'secret-santa-matches';
+  let matchesAry = [];
+  createMatches();
 
-  if (!sessionStorage.getItem(santaStorageKey)) {
-    givers.map(person => {
-      let pool = receivers.filter(name => name !== person);
-      let randIndex = Math.floor(Math.random() * pool.length);
-      while(pool[randIndex] === prevMatches[person]) {
-        randIndex = Math.floor(Math.random() * pool.length);
-      }
-      matches[person] = pool[randIndex];
-      receivers = receivers.filter(n => n !== matches[person]);
-    });
-    sessionStorage.setItem(santaStorageKey, JSON.stringify(matches));
-  } else {
-    matches = JSON.parse(sessionStorage.getItem(santaStorageKey));
+  
+  function createMatches() {
+    console.log('createMatches');
+    matches = {};
+    if (!sessionStorage.getItem(santaStorageKey)) {
+      givers.map(person => {
+        let pool = receivers.filter(name => name !== person);
+        let randIndex = Math.floor(Math.random() * pool.length);
+        while(pool[randIndex] === prevMatches[person]) {
+          randIndex = Math.floor(Math.random() * pool.length);
+        }
+        matches[person] = pool[randIndex];
+        receivers = receivers.filter(n => n !== matches[person]);
+      });
+      sessionStorage.setItem(santaStorageKey, JSON.stringify(matches));  
+    } else {
+      matches = JSON.parse(sessionStorage.getItem(santaStorageKey));
+    }
+    matchesAry = Object.entries(matches);
   }
-  let matchesAry = Object.entries(matches);
 
+  function resetMatches() {
+    sessionStorage.removeItem(santaStorageKey); 
+    // createMatches(); 
+  }
   return (
     <div className="App">
       <header className="App-header">
@@ -41,7 +52,7 @@ function App() {
               return <div style={{margin:15}} onClick={() => alert(`Hello, ${match[0]}!  Your secret sibling to serve this week is...${match[1]}!`)}>{match[0]}</div>
             })
           }
-        <div><button onClick={() => sessionStorage.removeItem(santaStorageKey) }>Get New Matches!</button></div>
+        <div><button onClick={() => resetMatches() }>Clear Matches!</button></div>
       </header>
     </div>
   );
