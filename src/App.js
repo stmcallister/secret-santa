@@ -2,27 +2,9 @@ import React from 'react';
 import './App.css';
 
 function App() {
-  let givers = ["Dad","Mom","Ashley","Andrew","Katie","Emily","Jen"];
-  let receivers = ["Dad","Mom","Ashley","Andrew","Katie","Emily","Jen"];
+  let givers = ["Dad","Mom","Ashley","Andrew","Katie","Emily"];
+  let receivers = ["Dad","Mom","Ashley","Andrew","Katie","Emily"];
   let matches = {};
-  matches = {
-    "12-6-2020": {
-      "Dad": "Katie",
-      "Mom": "Emily",
-      "Ashley": "Mom",
-      "Andrew": "Dad",
-      "Katie": "Ashley",
-      "Emily": "Andrew"
-    },
-    "12-13-2020": {
-      "Dad": "Andrew",
-      "Mom": "Ashley",
-      "Ashley": "Dad",
-      "Andrew": "Emily",
-      "Katie": "Mom",
-      "Emily": "Katie"
-    },
-  };
 
   const santaStorageKey = 'secret-santa-matches';
   let matchesAry = [];
