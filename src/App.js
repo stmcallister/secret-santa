@@ -4,25 +4,26 @@ import './App.css';
 function App() {
   let givers = ["Dad","Mom","Ashley","Andrew","Katie","Emily"];
   let receivers = ["Dad","Mom","Ashley","Andrew","Katie","Emily"];
-  let matches = {};
+  let matchesObj = {};
 
   const santaStorageKey = 'secret-santa-matches';
   let matchesAry = [];
 
   // if storage item doesn't exist, add defined matches
-  localStorage.setItem(santaStorageKey, JSON.stringify(matches));  
-
+  localStorage.setItem(santaStorageKey, JSON.stringify(matchesObj));  
 
   createMatches();
 
   matchesAry = getCurrentMatchesArray(getCurrentMatches());
 
-  function getPrevReceivers(name, matches) {
+  function getPrevReceivers(name, matchesObj) {
     let prevRec = [];
-    for (const [key, value] of Object.entries(matches)) {
+    /* eslint-disable no-unused-vars */
+    for (const [key, value] of Object.entries(matchesObj)) {
       prevRec.push(value[name]);
     }
- 
+  /* eslint-disable no-unused-vars */
+
     return prevRec;
   }
 
@@ -32,8 +33,15 @@ function App() {
     const dateStr = new Date().toLocaleDateString().replaceAll(/\//g, '-');
 
     // get matches from localstorage
-    let storedMatches = JSON.parse(localStorage.getItem(santaStorageKey));
+    console.log(`santaStorageKey: ${santaStorageKey}`);
+    console.log(`storedMatches: ${JSON.stringify(localStorage)}`);
 
+    let storedMatches = JSON.parse(localStorage.getItem(santaStorageKey));
+    // If matches already created today don't create new matches
+    if(storedMatches[dateStr]) {
+      console.log('already created match. exit');
+      return;
+    } 
     givers.forEach(person => {
       // get available receivers by filtering out giver from list of possible receivers
       let pool = receivers.filter(name => name !== person);
